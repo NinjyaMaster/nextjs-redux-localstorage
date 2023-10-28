@@ -28,7 +28,7 @@
   <h3 align="center">Nextjs-Redux-LocalStorage</h3>
 
   <p align="center">
-Showcasing local storage with Next.js in TypeScript and Redux
+Showcasing the use of local storage in Next.js with TypeScript, utilizing hooks and Redux.
     <br />
     <br />
   </p>
@@ -40,12 +40,8 @@ Showcasing local storage with Next.js in TypeScript and Redux
 <details>
   <summary>Table of Contents</summary>
   <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
+    <li><a href="#about-the-project">About The Project</a></li>
+ <li><a href="#built-with">Built With</a></li>
     <li><a href="#installation">Installation</a></li>
     <li><a href="#getting-started">Getting Started</a></li>
     <li><a href="#license">License</a></li>
@@ -58,18 +54,19 @@ Showcasing local storage with Next.js in TypeScript and Redux
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+[![Product Name Screen Shot][product-screenshot]]
 
-There are many great README templates available on GitHub; however, I didn't find one that really suited my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need -- I think this is it.
+Implementing local storage in Next.js poses a challenge due to server-side rendering. This repository presents a solution by utilizing hooks, demonstrated across three distinct component versions:
 
-Here's why:
-* Your time should be focused on creating something amazing. A project that solves a problem and helps others
-* You shouldn't be doing the same tasks over and over like creating a README from scratch
-* You should implement DRY principles to the rest of your life :smile:
+ <ol>
+<li>version 1 - Basic Load/Save to Local Storage: This straightforward version doesn't provide error feedback within the components, leaving users unaware of any failure during the load/save process.</li>
+<li>version 2 - Enhanced Error Handling and Debouncing: This component not only displays errors when encounters issues during loading/saving to local storage but also incorporates debouncing to optimize the process.</li>
+<li>version 3 - Handling Mounting with Loading Status: This approach ensures that accessing local storage only happens after the component has mounted. It features a loading status to prevent warnings commonly associated with premature local storage access. :smile:</li>
+ </ol>
 
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have contributed to expanding this template!
+Each version addresses specific complications, enhancing the robustness and user experience of local storage interactions within Next.js applications.
 
-Use the `BLANK_README.md` to get started.
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
