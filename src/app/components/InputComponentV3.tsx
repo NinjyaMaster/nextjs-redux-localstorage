@@ -4,13 +4,13 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { saveInput } from "@/redux/features/inputSlice";
-import useLocalStorage from "@/hooks/useLocalStorageV3";
+import useLocalStorageV3 from "@/hooks/useLocalStorageV3";
 import { useDebounce } from "@/hooks/useDebounce"; // make sure the path is correct
 
 const InputComponentV3: React.FC = () => {
   const [input, setInput] = useState("");
   const [storedInput, setStoredInput, localStorageError, isLoading] =
-    useLocalStorage("myInputKey_v3", ""); // <- Destructure isLoading
+    useLocalStorageV3("myInputKey_v3", ""); // <- Destructure isLoading
   const debouncedInput = useDebounce(input, 500);
   const dispatch = useDispatch();
 
