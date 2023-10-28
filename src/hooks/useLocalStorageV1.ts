@@ -5,7 +5,7 @@
 import { useState } from "react";
 
 // Define the shape of our hook functions.
-function useLocalStorage<T>(
+function useLocalStorageV1<T>(
   key: string,
   initialValue: T
 ): [T, (value: T | ((val: T) => T)) => void] {
@@ -44,4 +44,4 @@ function useLocalStorage<T>(
   return [state, setValue];
 }
 
-export default useLocalStorage;
+export default useLocalStorageV1;

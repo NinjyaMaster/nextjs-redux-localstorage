@@ -4,14 +4,14 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { saveInput } from "@/redux/features/inputSlice";
-import useLocalStorage from "@/hooks/useLocalStorage";
+import useLocalStorageV1 from "@/hooks/useLocalStorageV1";
 import { useDebounce } from "@/hooks/useDebounce"; // make sure path is correct
 
-const InputComponent: React.FC = () => {
+const InputComponentV1: React.FC = () => {
   const [input, setInput] = useState("");
   // Get the value from local storage if it exists
   //const [input, setInput] = useLocalStorage("myInputKey", "");
-  const [storedInput, setStoredInput] = useLocalStorage("myInputKey", "");
+  const [storedInput, setStoredInput] = useLocalStorageV1("myInputKey_v1", "");
   const debouncedInput = useDebounce(input, 500); // Debounce input for 500ms
   const dispatch = useDispatch();
 
@@ -39,10 +39,15 @@ const InputComponent: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="mb-2">
+      <h2 className="font-bold">Version 1</h2>
+      <p>
+        Demonstrate a simple method for saving and loading a value in local
+        storage. If it fails to load or save, throw a console.error.
+      </p>
       <input type="text" value={input} onChange={handleInputChange} />
     </div>
   );
 };
 
-export default InputComponent;
+export default InputComponentV1;

@@ -4,13 +4,15 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { saveInput } from "@/redux/features/inputSlice";
-import useLocalStorage from "@/hooks/useLocalStorage";
+import useLocalStorageV2 from "@/hooks/useLocalStorageV2";
 import { useDebounce } from "@/hooks/useDebounce"; // make sure the path is correct
 
-const InputComponent: React.FC = () => {
+const InputComponentV2: React.FC = () => {
   const [input, setInput] = useState("");
-  const [storedInput, setStoredInput, localStorageError, isLoading] =
-    useLocalStorage("myInputKey", ""); // <- Destructure isLoading
+  const [storedInput, setStoredInput, localStorageError] = useLocalStorageV2(
+    "myInputKey_v2",
+    ""
+  );
   const debouncedInput = useDebounce(input, 500);
   const dispatch = useDispatch();
 
@@ -27,7 +29,7 @@ const InputComponent: React.FC = () => {
       dispatch(saveInput(storedInput)); // This sets the Redux store's state when the component mounts
       setInput(storedInput);
     }
-  }, [isLoading, storedInput]); // The empty array means this useEffect will only be invoked once when the component mounts.
+  }, []); // The empty array means this useEffect will only be invoked once when the component mounts.
 
   // Effect for API call
   useEffect(
@@ -45,12 +47,13 @@ const InputComponent: React.FC = () => {
     setInput(e.target.value);
   };
 
-  if (isLoading) {
-    return <p>Loading...</p>; // <- You can customize this part
-  }
-
   return (
     <div>
+      <h2 className="font-bold">Version 2</h2>
+      <p>
+        Added debounce functionality to Version 1 to manage rapid input
+        effectively. Also implemented error display for loading/saving issues.
+      </p>
       <input type="text" value={input} onChange={handleInputChange} />
       {/* Optionally, you can display the error message directly in your component */}
       {localStorageError && (
@@ -60,4 +63,4 @@ const InputComponent: React.FC = () => {
   );
 };
 
-export default InputComponent;
+export default InputComponentV2;

@@ -4,15 +4,13 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { saveInput } from "@/redux/features/inputSlice";
-import useLocalStorage from "@/hooks/useLocalStorage";
+import useLocalStorage from "@/hooks/useLocalStorageV3";
 import { useDebounce } from "@/hooks/useDebounce"; // make sure the path is correct
 
-const InputComponent: React.FC = () => {
+const InputComponentV3: React.FC = () => {
   const [input, setInput] = useState("");
-  const [storedInput, setStoredInput, localStorageError] = useLocalStorage(
-    "myInputKey",
-    ""
-  );
+  const [storedInput, setStoredInput, localStorageError, isLoading] =
+    useLocalStorage("myInputKey_v3", ""); // <- Destructure isLoading
   const debouncedInput = useDebounce(input, 500);
   const dispatch = useDispatch();
 
@@ -29,7 +27,7 @@ const InputComponent: React.FC = () => {
       dispatch(saveInput(storedInput)); // This sets the Redux store's state when the component mounts
       setInput(storedInput);
     }
-  }, []); // The empty array means this useEffect will only be invoked once when the component mounts.
+  }, [isLoading, storedInput]); // The empty array means this useEffect will only be invoked once when the component mounts.
 
   // Effect for API call
   useEffect(
@@ -47,8 +45,17 @@ const InputComponent: React.FC = () => {
     setInput(e.target.value);
   };
 
+  if (isLoading) {
+    return <p>Loading...</p>; // <- You can customize this part
+  }
+
   return (
     <div>
+      <h2 className="font-bold">Version 3</h2>
+      <p>
+        Implemented a feature to indicate loading status while data is being
+        retrieved.
+      </p>
       <input type="text" value={input} onChange={handleInputChange} />
       {/* Optionally, you can display the error message directly in your component */}
       {localStorageError && (
@@ -58,4 +65,4 @@ const InputComponent: React.FC = () => {
   );
 };
 
-export default InputComponent;
+export default InputComponentV3;

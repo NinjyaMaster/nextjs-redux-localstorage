@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-function useLocalStorage<T>(
+function useLocalStorageV3<T>(
   key: string,
   initialValue: T
 ): [T, (value: T | ((val: T) => T)) => void, Error | null, boolean] {
@@ -51,4 +51,4 @@ function useLocalStorage<T>(
   return [storedValue, setValue, error, isLoading];
 }
 
-export default useLocalStorage;
+export default useLocalStorageV3;
