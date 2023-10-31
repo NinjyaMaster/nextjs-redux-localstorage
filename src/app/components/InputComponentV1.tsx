@@ -5,14 +5,11 @@ import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { saveInput } from "@/redux/features/inputSlice";
 import useLocalStorageV1 from "@/hooks/useLocalStorageV1";
-import { useDebounce } from "@/hooks/useDebounce"; // make sure path is correct
 
 const InputComponentV1: React.FC = () => {
   const [input, setInput] = useState("");
   // Get the value from local storage if it exists
-  //const [input, setInput] = useLocalStorage("myInputKey", "");
   const [storedInput, setStoredInput] = useLocalStorageV1("myInputKey_v1", "");
-  const debouncedInput = useDebounce(input, 500); // Debounce input for 500ms
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -22,20 +19,10 @@ const InputComponentV1: React.FC = () => {
     }
   }, []); // The empty array means this useEffect will only be invoked once when the component mounts.
 
-  // Effect for API call
-  useEffect(
-    () => {
-      if (debouncedInput) {
-        // Only save data if debouncedInput is not empty
-        dispatch(saveInput(debouncedInput));
-        setStoredInput(input); // Save to local storage
-      }
-    },
-    [debouncedInput, input, dispatch, setStoredInput] // Only call effect if debounced search term changes
-  );
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
+    dispatch(saveInput(e.target.value));
+    setStoredInput(e.target.value);
   };
 
   return (

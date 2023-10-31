@@ -1,6 +1,5 @@
 "use client";
 
-// InputComponent.tsx
 import React, { useState, useEffect, useCallback } from "react";
 import { debounce } from "lodash";
 
@@ -17,7 +16,6 @@ const InputComponentV3: React.FC = () => {
   const dispatch = useDispatch();
 
   const debouncedSave = (dataToSave: string) => {
-    console.log("Debounce Data saved to local storage!");
     setStoredInput(dataToSave);
   };
   const debounceFn = useCallback(
@@ -61,8 +59,7 @@ const InputComponentV3: React.FC = () => {
       <h2 className="font-bold">Version 3</h2>
       <p>
         Introduced a loading status feature during data retrieval and optimized
-        saving to local storage using debounce. Installed the lodash and
-        @types/lodash libraries to facilitate this.
+        saving to local storage using debounce.
       </p>
       <input type="text" value={input} onChange={handleInputChange} />
       {/* Optionally, you can display the error message directly in your component */}
