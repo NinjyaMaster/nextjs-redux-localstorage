@@ -1,24 +1,42 @@
 "use client";
 
 // InputComponent.tsx
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import { debounce } from "lodash";
+
 import { useDispatch } from "react-redux";
 import { saveInput } from "@/redux/features/inputSlice";
+import { store } from "@/redux/store";
+
 import useLocalStorageV3 from "@/hooks/useLocalStorageV3";
-import { useDebounce } from "@/hooks/useDebounce"; // make sure the path is correct
 
 const InputComponentV3: React.FC = () => {
   const [input, setInput] = useState("");
   const [storedInput, setStoredInput, localStorageError, isLoading] =
     useLocalStorageV3("myInputKey_v3", ""); // <- Destructure isLoading
-  const debouncedInput = useDebounce(input, 500);
   const dispatch = useDispatch();
 
+  const debouncedSave = (dataToSave: string) => {
+    console.log("Debounce Data saved to local storage!");
+    setStoredInput(dataToSave);
+  };
+  const debounceFn = useCallback(
+    debounce((data) => debouncedSave(data), 2000),
+    []
+  );
+
+  store.subscribe(() => {
+    const state = store.getState();
+    const dataToSave = state.input.value as string;
+    debounceFn(dataToSave);
+  });
+
+  // Handle the loading error here
   useEffect(() => {
     if (localStorageError) {
       alert(
         "Data cannot be saved to localStorage. Your progress may not be saved."
-      ); // <- Handle the error here
+      );
     }
   }, [localStorageError]); // <- This will trigger anytime there's a new error
 
@@ -29,20 +47,9 @@ const InputComponentV3: React.FC = () => {
     }
   }, [isLoading, storedInput]); // The empty array means this useEffect will only be invoked once when the component mounts.
 
-  // Effect for API call
-  useEffect(
-    () => {
-      if (debouncedInput) {
-        // Only save data if debouncedInput is not empty
-        dispatch(saveInput(debouncedInput));
-        setStoredInput(input); // Save to local storage
-      }
-    },
-    [debouncedInput, input, dispatch, setStoredInput] // Only call effect if debounced search term changes
-  );
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
+    dispatch(saveInput(e.target.value));
   };
 
   if (isLoading) {
@@ -53,8 +60,9 @@ const InputComponentV3: React.FC = () => {
     <div>
       <h2 className="font-bold">Version 3</h2>
       <p>
-        Implemented a feature to indicate loading status while data is being
-        retrieved.
+        Introduced a loading status feature during data retrieval and optimized
+        saving to local storage using debounce. Installed the lodash and
+        @types/lodash libraries to facilitate this.
       </p>
       <input type="text" value={input} onChange={handleInputChange} />
       {/* Optionally, you can display the error message directly in your component */}
